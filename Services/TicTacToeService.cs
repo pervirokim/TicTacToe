@@ -259,7 +259,7 @@ namespace tic_tac_toe
                 PlayGround[i, j] = Settings.ComputerWord;
                 return;
             }
-            else simpleChoise();
+            else eptyCellChoise();
         }
         private void eptyCellChoise()
         {
