@@ -1,6 +1,8 @@
-﻿namespace tic_tac_toe
+﻿using System.Windows.Forms;
+
+namespace tic_tac_toe
 {
-    partial class AppWindow
+    partial class GameView
     {
         /// <summary>
         ///  Required designer variable.
@@ -13,6 +15,8 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+
+            MainMenuView.Show();
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -34,7 +38,7 @@
             this.Column2 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.PlayGroundDisplay = new System.Windows.Forms.DataGridView();
-            this.info = new System.Windows.Forms.Label();
+            this.DifficultyLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PlayGroundDisplay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,31 +113,29 @@
             this.PlayGroundDisplay.Text = "dataGridView1";
             this.PlayGroundDisplay.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.PlayerClick);
             // 
-            // info
+            // DifficultyLabel
             // 
-            this.info.AutoSize = true;
-            this.info.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.info.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.info.Location = new System.Drawing.Point(12, 256);
-            this.info.Name = "info";
-            this.info.Size = new System.Drawing.Size(35, 20);
-            this.info.TabIndex = 2;
-            this.info.Text = "info";
-            this.info.Click += new System.EventHandler(this.info_Click);
+            this.DifficultyLabel.AutoSize = true;
+            this.DifficultyLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DifficultyLabel.Location = new System.Drawing.Point(92, 256);
+            this.DifficultyLabel.Name = "DifficultyLabel";
+            this.DifficultyLabel.Size = new System.Drawing.Size(99, 20);
+            this.DifficultyLabel.TabIndex = 2;
+            this.DifficultyLabel.Text = "Difficulty :  3";
             // 
-            // AppWindow
+            // GameView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(289, 285);
-            this.Controls.Add(this.info);
+            this.Controls.Add(this.DifficultyLabel);
             this.Controls.Add(this.Loses);
             this.Controls.Add(this.Wins);
             this.Controls.Add(this.PlayGroundDisplay);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AppWindow";
+            this.Name = "GameView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tic Tac Toe by PerviroKim";
             ((System.ComponentModel.ISupportInitialize)(this.PlayGroundDisplay)).EndInit();
@@ -151,7 +153,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn Column1;
         private System.Windows.Forms.DataGridViewButtonColumn Column2;
         private System.Windows.Forms.DataGridViewButtonColumn Column3;
-        private System.Windows.Forms.Label info;
+        private Label DifficultyLabel;
 
         public event System.Windows.Forms.DataGridViewCellEventHandler CellClick;
     }

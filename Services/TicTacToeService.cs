@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -7,6 +8,9 @@ namespace tic_tac_toe
 {
     public class TicTacToeService
     {
+        public TicTacToeService()
+        {
+        }
         private enum GameTurn
         {
             Player = 1,
@@ -19,17 +23,15 @@ namespace tic_tac_toe
             Tie = 3
         }
         private string[,] PlayGround { get; set; }
-        private int loseCount = 0;
-        private int winsCount = 0;
-        private Label Win { get; set; }
-        private Label Lose { get; set; }
-        private string UserWord { get; set; }
-        private string ComputerWord { get; set; }
+        private Label WinLabel { get; set; }
+        private Label LoseLabel { get; set; }
+        public SettingsModel Settings { get; set; }
+
         private GameStatus Status { get; set; }
         private GameTurn CurrentTurn { get; set; }
         public DataGridView PlayGroundToDisplay { get; set; }
-        public InfoModel Info { get; set; }
-        public ProgressModel Progress { get; set; }
+        public List<ProgressModel> Progress { get; set; }
+        public ProgressModel CurrentProgress { get; set; }
 
         public void InitializePlayGround(DataGridView playground, Label win, Label lose)
         {
@@ -38,12 +40,11 @@ namespace tic_tac_toe
             PlayGroundToDisplay.ColumnHeadersVisible = false;
             PlayGroundToDisplay.RowHeadersVisible = false;
 
-            Win = win;
-            Lose = lose;
-            winsCount = Progress.Wins;
-            loseCount = Progress.Loses;
-            Win.Text = "Wins : " + winsCount;
-            Lose.Text = "Loses : " + loseCount;
+            WinLabel = win;
+            LoseLabel = lose;
+
+            WinLabel.Text = "Wins : " + CurrentProgress.Wins;
+            LoseLabel.Text = "Loses : " + CurrentProgress.Loses;
 
 
             for (int i = 0; i < 3; i++)
@@ -51,14 +52,12 @@ namespace tic_tac_toe
                 DataGridViewRow row = new DataGridViewRow();
                 row.Height = 50;
                 row.ReadOnly = true;
-                row.Resizable= System.Windows.Forms.DataGridViewTriState.False;
+                row.Resizable = System.Windows.Forms.DataGridViewTriState.False;
                 PlayGroundToDisplay.Rows.Add(row);
             }
 
-            UserWord = "X";
-            ComputerWord = "O";
 
-          
+
 
             EmptyPlayGround();
             GridDataUpdate();
@@ -114,13 +113,13 @@ namespace tic_tac_toe
 
             GridDataUpdate();
 
-            if (IsGameOver(UserWord))
+            if (IsGameOver(Settings.UserWord))
             {
                 Status = GameStatus.Win;
                 GameEnd();
                 return;
             }
-            else if (IsGameOver(ComputerWord))
+            else if (IsGameOver(Settings.ComputerWord))
             {
                 Status = GameStatus.Lose;
                 GameEnd();
@@ -204,57 +203,63 @@ namespace tic_tac_toe
 
         private void ComputerStep()
         {
-            if (!chekForDouble(ComputerWord))
+            if (Settings.Difficulty >= 1 && !chekForDouble(Settings.ComputerWord))
             {
-                if (!chekForDouble(UserWord))
+                if (Settings.Difficulty >= 2 && !chekForDouble(Settings.UserWord))
                 {
-                    if (!chekForCurveFirs())
+                    if (Settings.Difficulty == 3 && !chekForCurveFirst())
                     {
 
                         if (String.IsNullOrEmpty(PlayGround[1, 1]))
                         {
-                            PlayGround[1, 1] = ComputerWord; return;
+                            PlayGround[1, 1] = Settings.ComputerWord; return;
                         }
 
                         else if (String.IsNullOrEmpty(PlayGround[0, 0]))
                         {
-                            PlayGround[0, 0] = ComputerWord; return;
+                            PlayGround[0, 0] = Settings.ComputerWord; return;
 
                         }
 
                         else if (String.IsNullOrEmpty(PlayGround[0, 2]))
                         {
-                            PlayGround[0, 2] = ComputerWord; return;
+                            PlayGround[0, 2] = Settings.ComputerWord; return;
                         }
 
                         else if (String.IsNullOrEmpty(PlayGround[2, 0]))
                         {
-                            PlayGround[2, 0] = ComputerWord; return;
+                            PlayGround[2, 0] = Settings.ComputerWord; return;
                         }
 
                         else if (String.IsNullOrEmpty(PlayGround[2, 2]))
                         {
-                            PlayGround[2, 2] = ComputerWord; return;
+                            PlayGround[2, 2] = Settings.ComputerWord; return;
                         }
+                        simpleChoise(); return;
 
-                        simpleChoise();
                     }
+                    if (Settings.Difficulty == 2)
+                        simpleChoise(); return;
                 }
-
+                if (Settings.Difficulty == 1)
+                    simpleChoise(); return;
             }
+
 
         }
 
 
         public void simpleChoise()
         {
-            for (int i = 0; i < PlayGround.GetLength(0); i++)
-                for (int j = 0; j < PlayGround.GetLength(1); j++)
-                    if (String.IsNullOrEmpty(PlayGround[i, j]))
-                    {
-                        PlayGround[i, j] = ComputerWord;
-                        return;
-                    }
+            Random random = new Random();
+            int i = random.Next(0, PlayGround.GetLength(0));
+            int j = random.Next(0, PlayGround.GetLength(0));
+            if (String.IsNullOrEmpty(PlayGround[i, j]))
+            {
+                PlayGround[i, j] = Settings.ComputerWord;
+                return;
+            }
+            else simpleChoise();
         }
 
         public bool chekForDouble(string word)
@@ -273,7 +278,7 @@ namespace tic_tac_toe
                         {
                             if (String.IsNullOrEmpty(PlayGround[i, g]))
                             {
-                                PlayGround[i, g] = ComputerWord;
+                                PlayGround[i, g] = Settings.ComputerWord;
                                 return true;
                             }
                         }
@@ -298,7 +303,7 @@ namespace tic_tac_toe
                         {
                             if (String.IsNullOrEmpty(PlayGround[g, i]))
                             {
-                                PlayGround[g, i] = ComputerWord;
+                                PlayGround[g, i] = Settings.ComputerWord;
                                 return true;
                             }
                         }
@@ -319,7 +324,7 @@ namespace tic_tac_toe
                     {
                         if (String.IsNullOrEmpty(PlayGround[g, g]))
                         {
-                            PlayGround[g, g] = ComputerWord;
+                            PlayGround[g, g] = Settings.ComputerWord;
                             return true;
                         }
                     }
@@ -339,7 +344,7 @@ namespace tic_tac_toe
                 {
                     if (String.IsNullOrEmpty(PlayGround[i, j]))
                     {
-                        PlayGround[i, j] = ComputerWord;
+                        PlayGround[i, j] = Settings.ComputerWord;
                         return true;
                     }
 
@@ -352,7 +357,7 @@ namespace tic_tac_toe
         {
             if (String.IsNullOrEmpty(PlayGround[i, j]))
             {
-                PlayGround[i, j] = UserWord;
+                PlayGround[i, j] = Settings.UserWord;
                 CurrentTurn = GameTurn.Computer;
                 Step();
             }
@@ -360,7 +365,7 @@ namespace tic_tac_toe
 
         }
 
-        public bool chekForCurveFirs()
+        public bool chekForCurveFirst()
         {
             //todo
             int userWordsCounter = 0;
@@ -369,34 +374,34 @@ namespace tic_tac_toe
             {
                 for (int j = 0; j < PlayGround.GetLength(1); j++)
                 {
-                    if (PlayGround[i, j] == UserWord)
+                    if (PlayGround[i, j] == Settings.UserWord)
                         userWordsCounter++;
-                    if (PlayGround[i, j] == ComputerWord)
+                    if (PlayGround[i, j] == Settings.ComputerWord)
                         computerWordsCounter++;
                 }
             }
 
             if (userWordsCounter == 2 && computerWordsCounter == 1)
             {
-                if (PlayGround[0, 0] == UserWord)
+                if (PlayGround[0, 0] == Settings.UserWord)
                 {
-                    PlayGround[0, 1] = ComputerWord;
+                    PlayGround[0, 1] = Settings.ComputerWord;
                     return true;
                 }
 
-                if (PlayGround[0, 2] == UserWord)
+                if (PlayGround[0, 2] == Settings.UserWord)
                 {
-                    PlayGround[0, 1] = ComputerWord;
+                    PlayGround[0, 1] = Settings.ComputerWord;
                     return true;
                 }
-                if (PlayGround[2, 0] == UserWord)
+                if (PlayGround[2, 0] == Settings.UserWord)
                 {
-                    PlayGround[2, 1] = ComputerWord;
+                    PlayGround[2, 1] = Settings.ComputerWord;
                     return true;
                 }
-                if (PlayGround[2, 2] == UserWord)
+                if (PlayGround[2, 2] == Settings.UserWord)
                 {
-                    PlayGround[2, 1] = ComputerWord;
+                    PlayGround[2, 1] = Settings.ComputerWord;
                     return true;
                 }
             }
@@ -419,15 +424,15 @@ namespace tic_tac_toe
             string message = "";
             if (Status == GameStatus.Win)
             {
-                winsCount++;
+                CurrentProgress.Wins++;
                 message += "You Win!";
-                Win.Text = "Wins : " + winsCount;
+                WinLabel.Text = "Wins : " + CurrentProgress.Wins;
             }
             else if (Status == GameStatus.Lose)
             {
-                loseCount++;
+                CurrentProgress.Loses++;
                 message += "You Lose!";
-                Lose.Text = "Loses : " + loseCount;
+                LoseLabel.Text = "Loses : " + CurrentProgress.Loses;
             }
             else if (Status == GameStatus.Tie)
             {
@@ -435,9 +440,10 @@ namespace tic_tac_toe
             }
             MessageBox.Show(message, "Game Over");
 
+            ProgressModel progressTosave = this.Progress.Find(p => p.Difficulty == CurrentProgress.Difficulty);
+            progressTosave.Loses = CurrentProgress.Loses;
+            progressTosave.Wins = CurrentProgress.Wins;
 
-            Progress.Loses = loseCount;
-            Progress.Wins = winsCount;
             File.WriteAllText("save.json", JsonConvert.SerializeObject(Progress));
 
             EmptyPlayGround();

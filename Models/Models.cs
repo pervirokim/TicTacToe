@@ -13,5 +13,13 @@ namespace tic_tac_toe
     {
         public int Loses { get; set; }
         public int Wins { get; set; }
+        public int Difficulty { get; set; }
+    }
+    public class SettingsModel
+    {
+        public int Difficulty { get; set; }
+        public string Theme { get; set; }
+        public string UserWord { get; set; }
+        public string ComputerWord { get; set; }
     }
 }
