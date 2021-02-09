@@ -235,7 +235,7 @@ namespace tic_tac_toe
                         {
                             PlayGround[2, 2] = Settings.ComputerWord; return;
                         }
-                        simpleChoise(); return;
+                        eptyCellChoise(); return;
 
                     }
                     if (Settings.Difficulty == 2)
@@ -249,7 +249,7 @@ namespace tic_tac_toe
         }
 
 
-        public void simpleChoise()
+        private void simpleChoise()
         {
             Random random = new Random();
             int i = random.Next(0, PlayGround.GetLength(0));
@@ -260,6 +260,16 @@ namespace tic_tac_toe
                 return;
             }
             else simpleChoise();
+        }
+        private void eptyCellChoise()
+        {
+            for (int i = 0; i < PlayGround.GetLength(0); i++)
+                for (int j = 0; j < PlayGround.GetLength(0); j++)
+                    if (String.IsNullOrEmpty(PlayGround[i, j]))
+                    {
+                        PlayGround[i, j] = Settings.ComputerWord;
+                        return;
+                    }
         }
 
         public bool chekForDouble(string word)
