@@ -21,13 +21,22 @@ namespace tic_tac_toe
         {
             MainMenuView = instance;
             Settings = JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText("settings.json"));
-           
+
             InitializeComponent();
 
             DifficultyBox.Text = Settings.Difficulty.ToString();
             ThemeBox.Text = Settings.Theme;
             PSymbolBox.Text = Settings.UserWord;
             CSymbolBox.Text = Settings.ComputerWord;
+
+
+            if (Settings.GameTurn == GameTurn.Player)
+                TPlayer.Checked = true;
+            if (Settings.GameTurn == GameTurn.Random)
+                TRandom.Checked = true;
+            if (Settings.GameTurn == GameTurn.Computer)
+                TComputer.Checked = true;
+
 
         }
 
@@ -43,6 +52,10 @@ namespace tic_tac_toe
             this.PSymbolBox = new System.Windows.Forms.TextBox();
             this.CSymbolBox = new System.Windows.Forms.TextBox();
             this.CancelButton = new System.Windows.Forms.Button();
+            this.TPlayer = new System.Windows.Forms.RadioButton();
+            this.TComputer = new System.Windows.Forms.RadioButton();
+            this.TRandom = new System.Windows.Forms.RadioButton();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SaveSettingsButton
@@ -147,9 +160,58 @@ namespace tic_tac_toe
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelSettingsButton_Click);
             // 
+            // TPlayer
+            // 
+            this.TPlayer.AutoSize = true;
+            this.TPlayer.Location = new System.Drawing.Point(238, 136);
+            this.TPlayer.Name = "TPlayer";
+            this.TPlayer.Size = new System.Drawing.Size(70, 24);
+            this.TPlayer.TabIndex = 4;
+            this.TPlayer.Text = "Player";
+            this.TPlayer.UseVisualStyleBackColor = true;
+            this.TPlayer.Click += new System.EventHandler(this.RadioTurnCheked);
+            // 
+            // TComputer
+            // 
+            this.TComputer.AutoSize = true;
+            this.TComputer.Location = new System.Drawing.Point(329, 136);
+            this.TComputer.Name = "TComputer";
+            this.TComputer.Size = new System.Drawing.Size(96, 24);
+            this.TComputer.TabIndex = 4;
+            this.TComputer.Text = "Computer";
+            this.TComputer.UseVisualStyleBackColor = true;
+            this.TComputer.Click += new System.EventHandler(this.RadioTurnCheked);
+            // 
+            // TRandom
+            // 
+            this.TRandom.AutoSize = true;
+            this.TRandom.Checked = true;
+            this.TRandom.Location = new System.Drawing.Point(133, 136);
+            this.TRandom.Name = "TRandom";
+            this.TRandom.Size = new System.Drawing.Size(86, 24);
+            this.TRandom.TabIndex = 4;
+            this.TRandom.TabStop = true;
+            this.TRandom.Text = "Random";
+            this.TRandom.UseVisualStyleBackColor = true;
+            this.TRandom.Click += new System.EventHandler(this.RadioTurnCheked);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label5.Location = new System.Drawing.Point(12, 129);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(109, 32);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "First turn";
+            // 
             // SettingsView
             // 
             this.ClientSize = new System.Drawing.Size(569, 233);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.TRandom);
+            this.Controls.Add(this.TComputer);
+            this.Controls.Add(this.TPlayer);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.CSymbolBox);
             this.Controls.Add(this.PSymbolBox);
@@ -160,11 +222,16 @@ namespace tic_tac_toe
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SaveSettingsButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SettingsView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tic Tac Toe by PerviroKim";
             this.ResumeLayout(false);
             this.PerformLayout();
+
+        }
+        private void RadioTurnCheked(object sender, EventArgs e)
+        {
 
         }
 
@@ -175,6 +242,16 @@ namespace tic_tac_toe
             settingsToSave.Theme = ThemeBox.Text;
             settingsToSave.UserWord = PSymbolBox.Text;
             settingsToSave.ComputerWord = CSymbolBox.Text;
+
+            GameTurn turn = GameTurn.Random;
+            if (TPlayer.Checked)
+                turn = GameTurn.Player;
+            if (TRandom.Checked)
+                turn = GameTurn.Random;
+            if (TComputer.Checked)
+                turn = GameTurn.Computer;
+
+            settingsToSave.GameTurn = turn;
 
             File.WriteAllText("settings.json", JsonConvert.SerializeObject(settingsToSave));
 

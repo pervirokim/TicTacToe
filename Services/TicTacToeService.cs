@@ -11,17 +11,7 @@ namespace tic_tac_toe
         public TicTacToeService()
         {
         }
-        private enum GameTurn
-        {
-            Player = 1,
-            Computer = 2
-        }
-        private enum GameStatus
-        {
-            Win = 1,
-            Lose = 2,
-            Tie = 3
-        }
+
         private string[,] PlayGround { get; set; }
         private Label WinLabel { get; set; }
         private Label LoseLabel { get; set; }
@@ -67,8 +57,19 @@ namespace tic_tac_toe
         }
         public void RandomTurn()
         {
-            Random random = new Random();
-            switch (random.Next(0, 3))
+            int turnCase = 1;
+            if (Settings.GameTurn == GameTurn.Random)
+            {
+                Random random = new Random();
+                turnCase = random.Next(0, 3);
+            }
+
+            else if (Settings.GameTurn == GameTurn.Player)
+                turnCase = 1;
+            else if (Settings.GameTurn == GameTurn.Computer)
+                turnCase = 2;
+
+            switch (turnCase)
             {
                 case 1:
                     CurrentTurn = GameTurn.Player;
@@ -209,34 +210,7 @@ namespace tic_tac_toe
                 {
                     if (Settings.Difficulty == 3 && !chekForCurveFirst())
                     {
-
-                        if (String.IsNullOrEmpty(PlayGround[1, 1]))
-                        {
-                            PlayGround[1, 1] = Settings.ComputerWord; return;
-                        }
-
-                        else if (String.IsNullOrEmpty(PlayGround[0, 0]))
-                        {
-                            PlayGround[0, 0] = Settings.ComputerWord; return;
-
-                        }
-
-                        else if (String.IsNullOrEmpty(PlayGround[0, 2]))
-                        {
-                            PlayGround[0, 2] = Settings.ComputerWord; return;
-                        }
-
-                        else if (String.IsNullOrEmpty(PlayGround[2, 0]))
-                        {
-                            PlayGround[2, 0] = Settings.ComputerWord; return;
-                        }
-
-                        else if (String.IsNullOrEmpty(PlayGround[2, 2]))
-                        {
-                            PlayGround[2, 2] = Settings.ComputerWord; return;
-                        }
-                        eptyCellChoise(); return;
-
+                        UnrealDifficultyAlghoritm();
                     }
                     if (Settings.Difficulty == 2)
                         simpleChoise(); return;
@@ -244,10 +218,75 @@ namespace tic_tac_toe
                 if (Settings.Difficulty == 1)
                     simpleChoise(); return;
             }
-
-
         }
 
+        private void UnrealDifficultyAlghoritm()
+        {
+            Random random = new Random();
+            int randomCase = random.Next(1, 7);
+            switch (randomCase)
+            {
+                case 1:
+                    if (String.IsNullOrEmpty(PlayGround[1, 1]))
+                    {
+                        PlayGround[1, 1] = Settings.ComputerWord;
+                    }
+                    else
+                    {
+                        randomCase = random.Next(1, 7);
+                        UnrealDifficultyAlghoritm();
+                    }
+                    return;
+                case 2:
+                    if (String.IsNullOrEmpty(PlayGround[0, 0]))
+                    {
+                        PlayGround[0, 0] = Settings.ComputerWord;
+                    }
+                    else
+                    {
+                        randomCase = random.Next(1, 7);
+                        UnrealDifficultyAlghoritm();
+                    }
+                    return;
+                case 3:
+                    if (String.IsNullOrEmpty(PlayGround[0, 2]))
+                    {
+                        PlayGround[0, 2] = Settings.ComputerWord;
+                    }
+                    else
+                    {
+                        randomCase = random.Next(1, 7);
+                        UnrealDifficultyAlghoritm();
+                    }
+                    return;
+                case 4:
+                    if (String.IsNullOrEmpty(PlayGround[2, 0]))
+                    {
+                        PlayGround[2, 0] = Settings.ComputerWord;
+                    }
+                    else
+                    {
+                        randomCase = random.Next(1, 7);
+                        UnrealDifficultyAlghoritm();
+                    }
+                    return;
+                case 5:
+                    if (String.IsNullOrEmpty(PlayGround[2, 2]))
+                    {
+                        PlayGround[2, 2] = Settings.ComputerWord;
+                    }
+                    else
+                    {
+                        randomCase = random.Next(1, 7);
+                        UnrealDifficultyAlghoritm();
+
+                    }
+                    return;
+                case 6:
+                    eptyCellChoise(); return;
+
+            }
+        }
 
         private void simpleChoise()
         {
@@ -391,7 +430,7 @@ namespace tic_tac_toe
                 }
             }
 
-            if (userWordsCounter == 2 && computerWordsCounter == 1)
+            if (userWordsCounter == 2 && computerWordsCounter == 1 && PlayGround[1, 1] != Settings.UserWord)
             {
                 if (PlayGround[0, 0] == Settings.UserWord)
                 {

@@ -102,13 +102,13 @@ namespace tic_tac_toe
             this.Column1,
             this.Column2,
             this.Column3});
-            this.PlayGroundDisplay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PlayGroundDisplay.Cursor = System.Windows.Forms.Cursors.Default;
             this.PlayGroundDisplay.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.PlayGroundDisplay.Location = new System.Drawing.Point(67, 12);
             this.PlayGroundDisplay.Name = "PlayGroundDisplay";
             this.PlayGroundDisplay.ReadOnly = true;
             this.PlayGroundDisplay.RowHeadersWidth = 51;
-            this.PlayGroundDisplay.Size = new System.Drawing.Size(153, 187);
+            this.PlayGroundDisplay.Size = new System.Drawing.Size(210, 241);
             this.PlayGroundDisplay.TabIndex = 0;
             this.PlayGroundDisplay.Text = "dataGridView1";
             this.PlayGroundDisplay.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.PlayerClick);
@@ -132,7 +132,7 @@ namespace tic_tac_toe
             this.Controls.Add(this.Loses);
             this.Controls.Add(this.Wins);
             this.Controls.Add(this.PlayGroundDisplay);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GameView";
@@ -155,7 +155,6 @@ namespace tic_tac_toe
         private System.Windows.Forms.DataGridViewButtonColumn Column3;
         private Label DifficultyLabel;
 
-        public event System.Windows.Forms.DataGridViewCellEventHandler CellClick;
     }
 }
 

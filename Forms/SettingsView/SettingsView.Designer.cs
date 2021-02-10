@@ -28,9 +28,13 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox DifficultyBox;
         private System.Windows.Forms.ComboBox ThemeBox;
+        private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.TextBox PSymbolBox;
         private System.Windows.Forms.TextBox CSymbolBox;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.RadioButton TPlayer;
+        private System.Windows.Forms.RadioButton TComputer;
+        private System.Windows.Forms.RadioButton TRandom;
+        private System.Windows.Forms.Label label5;
     }
 }
 

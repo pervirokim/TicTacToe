@@ -30,7 +30,7 @@ namespace tic_tac_toe
             }
             else
             {
-                TicTacToeService.CurrentProgress = new ProgressModel() { Difficulty = 2 };
+                TicTacToeService.CurrentProgress = new ProgressModel() { Difficulty = settings.Difficulty };
                 TicTacToeService.Progress = new List<ProgressModel>();
 
                 TicTacToeService.Progress.Add(new ProgressModel() { Difficulty = 1 });

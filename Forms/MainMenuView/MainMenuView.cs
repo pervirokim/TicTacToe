@@ -26,6 +26,7 @@ namespace tic_tac_toe
                 _settings.UserWord = "X";
                 _settings.Difficulty = 2;
                 _settings.Theme = "default";
+                _settings.GameTurn = GameTurn.Random;
 
                 File.WriteAllText("settings.json", JsonConvert.SerializeObject(_settings));
 
