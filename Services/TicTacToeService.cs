@@ -233,7 +233,6 @@ namespace tic_tac_toe
                     }
                     else
                     {
-                        randomCase = random.Next(1, 7);
                         UnrealDifficultyAlghoritm();
                     }
                     return;
@@ -244,7 +243,6 @@ namespace tic_tac_toe
                     }
                     else
                     {
-                        randomCase = random.Next(1, 7);
                         UnrealDifficultyAlghoritm();
                     }
                     return;
@@ -255,7 +253,6 @@ namespace tic_tac_toe
                     }
                     else
                     {
-                        randomCase = random.Next(1, 7);
                         UnrealDifficultyAlghoritm();
                     }
                     return;
@@ -266,7 +263,6 @@ namespace tic_tac_toe
                     }
                     else
                     {
-                        randomCase = random.Next(1, 7);
                         UnrealDifficultyAlghoritm();
                     }
                     return;
@@ -277,13 +273,17 @@ namespace tic_tac_toe
                     }
                     else
                     {
-                        randomCase = random.Next(1, 7);
                         UnrealDifficultyAlghoritm();
-
                     }
                     return;
                 case 6:
-                    eptyCellChoise(); return;
+                    {
+                        if (!String.IsNullOrEmpty(PlayGround[2, 2]) && !String.IsNullOrEmpty(PlayGround[2, 0]) && !String.IsNullOrEmpty(PlayGround[0, 2]) && !String.IsNullOrEmpty(PlayGround[0, 0]) && !String.IsNullOrEmpty(PlayGround[1, 1]))
+                            eptyCellChoise();
+                        else
+                            UnrealDifficultyAlghoritm();
+                        return;
+                    }
 
             }
         }
